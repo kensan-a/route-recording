@@ -10,7 +10,9 @@
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
+    "@types/mapbox-gl": "2.1.0",
     "compression": "^1.7.1",
+    "mapbox-gl": "2.1.1",
     "polka": "next",
     "sirv": "^1.0.0"
   },
