@@ -13,3 +13,11 @@
 # Google Maps
 
 [Integrating Google Maps with dark scheme in Svelte & Sapper](https://shipbit.de/blog/google-maps-svelte-sapper/)
+
+# 位置情報 API
+
+[位置情報 API](https://developer.mozilla.org/ja/docs/Web/API/Geolocation_API)
+
+[JavaScript による位置情報の取得を簡単に解説（geolocation）](https://blog.codecamp.jp/javascript-geolocation)
+
+[JavaScript で位置情報(GPS)取得](https://web-designer.cman.jp/javascript_ref/others/gps/)
