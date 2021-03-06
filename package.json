@@ -1,6 +1,6 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "route-recording",
+  "description": "Route recording",
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev",
