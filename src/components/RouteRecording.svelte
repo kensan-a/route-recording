@@ -63,9 +63,32 @@
     });
   });
 
-  // const startMap = () => {
-  //   cmanPosWatch(window.google.maps);
-  // };
+  const startMap = () => {
+    // cmanPosWatch(window.google.maps);
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+
+      console.log("Your current position is:");
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+      console.log(`More or less ${crd.accuracy} meters.`);
+
+      map.flyTo({ center: [crd.longitude, crd.latitude] });
+    }
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  };
 </script>
 
 <svelte:head>
@@ -77,15 +100,19 @@
 </svelte:head>
 
 <style>
+  .wapper {
+    display: flex;
+  }
+
   .map {
     width: 100%;
-    height: 100%;
+    height: 90%;
   }
 </style>
 
-<!-- <a href="#!" target="_self" on:click={startMap}>
-  ルート記録開始
-</a> -->
+<a href="#!" target="_self" on:click={startMap}>
+  現在位置へ
+</a>
 
 <div class="map" bind:this={container}></div>
 <!-- <Map /> -->
