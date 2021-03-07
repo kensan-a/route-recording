@@ -1,22 +1,23 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
   import mapboxgl from "mapbox-gl";
-  // import { Map, NavigationControl, ScaleControl } from "mapbox-gl";
 
   // import Map from "../components/Map.svelte";
   // import { cmanPosWatch } from "./common/getLocation";
+
+  const { Map, NavigationControl, ScaleControl } = mapboxgl;
+  let map;
+  let container;
 
   onMount(() => {
     mapboxgl.accessToken =
       "pk.eyJ1Ijoia2Vuc2FuLWEiLCJhIjoiY2tseGJzc3k1MDhrajJwbnZhNDVubnpkaiJ9.uZBfIS1iB7V73xxoslqusA";
 
-    const map = new mapboxgl.Map({
-      container: "watMap", // container ID
-      style: "mapbox://styles/mapbox/streets-v11", // style URL
-      // center: [-74.5, 40], // starting position [lng, lat]
+    map = new Map({
+      container,
+      style: "mapbox://styles/mapbox/streets-v11",
       center: [139.7644081, 35.680043],
-      zoom: 9 // starting zoom
+      zoom: 10
     });
 
     // const map = new Map({
@@ -46,20 +47,20 @@
     //   }
     // });
 
-    // map.addControl(new NavigationControl());
+    map.addControl(new NavigationControl());
 
-    // map.addControl(
-    //   new ScaleControl({
-    //     maxWidth: 200,
-    //     unit: "metric"
-    //   }),
-    //   "bottom-right"
-    // );
+    map.addControl(
+      new ScaleControl({
+        maxWidth: 200,
+        unit: "metric"
+      }),
+      "bottom-right"
+    );
 
-    // map.on("moveend", e => {
-    //   console.log(map.getCenter());
-    //   console.log(map.getZoom());
-    // });
+    map.on("moveend", e => {
+      console.log(map.getCenter());
+      console.log(map.getZoom());
+    });
   });
 
   // const startMap = () => {
@@ -76,14 +77,9 @@
 </svelte:head>
 
 <style>
-  #watMap {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    /* width: 100%; */
-    /* height: 100%; */
-    height: 600px;
-    width: 600px;
+  .map {
+    width: 100%;
+    height: 100%;
   }
 </style>
 
@@ -91,5 +87,5 @@
   ルート記録開始
 </a> -->
 
-<div id="watMap"></div>
+<div class="map" bind:this={container}></div>
 <!-- <Map /> -->
