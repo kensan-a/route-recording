@@ -1,25 +1,95 @@
 <script lang="ts">
-  // import Map from "../components/Map.svelte";
-  import { cmanPosWatch } from "./common/getLocation";
+  import { onMount } from "svelte";
 
-  const startMap = () => {
-    cmanPosWatch(window.google.maps);
-  };
+  import mapboxgl from "mapbox-gl";
+  // import { Map, NavigationControl, ScaleControl } from "mapbox-gl";
+
+  // import Map from "../components/Map.svelte";
+  // import { cmanPosWatch } from "./common/getLocation";
+
+  onMount(() => {
+    mapboxgl.accessToken =
+      "pk.eyJ1Ijoia2Vuc2FuLWEiLCJhIjoiY2tseGJzc3k1MDhrajJwbnZhNDVubnpkaiJ9.uZBfIS1iB7V73xxoslqusA";
+
+    const map = new mapboxgl.Map({
+      container: "watMap", // container ID
+      style: "mapbox://styles/mapbox/streets-v11", // style URL
+      // center: [-74.5, 40], // starting position [lng, lat]
+      center: [139.7644081, 35.680043],
+      zoom: 9 // starting zoom
+    });
+
+    // const map = new Map({
+    //   container: "watMap",
+    //   style: {
+    //     version: 8,
+    //     sources: {
+    //       cyberJapan: {
+    //         type: "raster",
+    //         tiles: ["https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png"],
+    //         tileSize: 256,
+    //         attribution:
+    //           "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"
+    //       }
+    //     },
+    //     layers: [
+    //       {
+    //         id: "main-layer",
+    //         type: "raster",
+    //         source: "cyberJapan",
+    //         minzoom: 0,
+    //         maxzoom: 22
+    //       }
+    //     ],
+    //     center: [139.7644081, 35.680043],
+    //     zoom: 10
+    //   }
+    // });
+
+    // map.addControl(new NavigationControl());
+
+    // map.addControl(
+    //   new ScaleControl({
+    //     maxWidth: 200,
+    //     unit: "metric"
+    //   }),
+    //   "bottom-right"
+    // );
+
+    // map.on("moveend", e => {
+    //   console.log(map.getCenter());
+    //   console.log(map.getZoom());
+    // });
+  });
+
+  // const startMap = () => {
+  //   cmanPosWatch(window.google.maps);
+  // };
 </script>
 
 <svelte:head>
-  <script
+  <!-- <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRo134Nk1ubkPS5gm6mdyQ64gCVUhSIuc&libraries=places"
-  ></script>
+  ></script> -->
+
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
 </svelte:head>
 
 <style>
-  #watMap { height: 600px; width: 600px}
+  #watMap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* width: 100%; */
+    /* height: 100%; */
+    height: 600px;
+    width: 600px;
+  }
 </style>
 
-<a href="#!" target="_self" on:click={startMap}>
+<!-- <a href="#!" target="_self" on:click={startMap}>
   ルート記録開始
-</a>
+</a> -->
 
 <div id="watMap"></div>
 <!-- <Map /> -->
