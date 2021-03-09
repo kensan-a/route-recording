@@ -1,8 +1,10 @@
 # Mapbox
 
+[Mapbox](https://www.mapbox.jp/)
+
 [Mapbox ドキュメンテーション](https://docs.mapbox.com/jp/)
 
-[Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/api/)
+[Mapbox GL JS](https://docs.mapbox.com/jp/mapbox-gl-js/overview/)
 
 [npm mapbox-gl](https://www.npmjs.com/package/mapbox-gl)
 
