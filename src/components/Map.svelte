@@ -5,28 +5,26 @@
   export let longitude = 0;
   export let latitude = 0;
 
-  const lastSpecifiedPosition = {
-    longitude: 0,
-    latitude: 0
-  };
-
   let map;
   let container;
 
-  $: if (
-    map &&
-    (longitude !== lastSpecifiedPosition.longitude ||
-      latitude !== lastSpecifiedPosition.latitude)
-  ) {
-    console.log("Specified position changed:", longitude, latitude);
+  $: {
+    if (map) {
+      console.log("Map component updated:");
 
-    lastSpecifiedPosition.longitude = longitude;
-    lastSpecifiedPosition.latitude = latitude;
+      const center = map.getCenter();
 
-    map.flyTo({
-      center: [longitude, latitude],
-      zoom: map.getZoom()
-    });
+      if (longitude !== center.lng || latitude !== center.lat) {
+        console.log("Specified position changed:");
+        console.log(center.lng, "-> ", longitude);
+        console.log(center.lat, "->", latitude);
+
+        map.flyTo({
+          center: [longitude, latitude],
+          zoom: map.getZoom()
+        });
+      }
+    }
   }
 
   const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
@@ -62,13 +60,14 @@
     );
 
     map.on("moveend", e => {
-      const lngLat = map.getCenter();
-      const zoomLevel = map.getZoom();
+      const center = map.getCenter();
+      const zoom = map.getZoom();
 
-      longitude = lngLat.lng;
-      latitude = lngLat.lat;
+      longitude = center.lng;
+      latitude = center.lat;
 
-      console.log(longitude, latitude, zoomLevel);
+      console.log("Map is moved:");
+      console.log(longitude, latitude, zoom);
     });
   });
 </script>
