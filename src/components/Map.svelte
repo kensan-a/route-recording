@@ -5,14 +5,58 @@
   export let longitude = 0;
   export let latitude = 0;
 
-  $: currentPosition = {
-    longitude,
-    latitude
+  const currentPosition = {
+    longitude: 0,
+    latitude: 0
   };
+
+  const lastSpecifiedPosition = {
+    longitude: 0,
+    latitude: 0
+  };
+
   let map;
   let container;
 
+  $: if (
+    map &&
+    (longitude !== lastSpecifiedPosition.longitude ||
+      latitude !== lastSpecifiedPosition.latitude)
+  ) {
+    console.log("Specified position changed:", longitude, latitude);
+
+    lastSpecifiedPosition.longitude = longitude;
+    lastSpecifiedPosition.latitude = latitude;
+
+    // map &&
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom: map.getZoom()
+    });
+  }
+
   const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
+
+  // beforeUpdate(() => {
+  //   console.log("beforeUpdate");
+
+  //   if (!map) return;
+  //   if (
+  //     longitude === currentPosition.longitude &&
+  //     latitude === currentPosition.latitude
+  //   )
+  //     return;
+
+  //   console.log("breforeUpdate:", longitude, latitude);
+
+  //   currentPosition.longitude = longitude;
+  //   currentPosition.latitude = latitude;
+
+  //   map.flyTo({
+  //     center: [longitude, latitude],
+  //     zoom: map.getZoom()
+  //   });
+  // });
 
   onMount(() => {
     mapboxgl.accessToken =
@@ -50,29 +94,10 @@
 
       currentPosition.longitude = lngLat.lng;
       currentPosition.latitude = lngLat.lat;
+      longitude = lngLat.lng;
+      latitude = lngLat.lat;
 
       console.log(currentPosition.longitude, currentPosition.latitude, zoomLevel);
-    });
-  });
-
-  beforeUpdate(() => {
-    console.log("beforeUpdate");
-
-    if (!map) return;
-    if (
-      longitude === currentPosition.longitude &&
-      latitude === currentPosition.latitude
-    )
-      return;
-
-    console.log("breforeUpdate:", longitude, latitude);
-
-    currentPosition.longitude = longitude;
-    currentPosition.latitude = latitude;
-
-    map.flyTo({
-      center: [longitude, latitude],
-      zoom: map.getZoom()
     });
   });
 
@@ -114,6 +139,11 @@
     height: 100%;
   }
 </style>
+
+<div>
+  <span>{longitude}</span>
+  <apsn>{latitude}</apsn>
+</div>
 
 <div class="map" bind:this={container}></div>
 
