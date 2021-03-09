@@ -1,6 +1,53 @@
 <script lang="ts">
   // import { onMount } from "svelte";
   import Map from "./Map.svelte";
+
+  let longitude = 139.7644081;
+  let latitude = 35.680043;
+
+  const getCurrentPosition = () => {
+    return new Promise((resolve, reject) => {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
+
+      const success = pos => {
+        const { longitude, latitude, accuracy } = pos.coords;
+
+        // console.log("Your current position is:");
+        // console.log(`Latitude : ${latitude}`);
+        // console.log(`Longitude: ${longitude}`);
+        // console.log(`More or less ${accuracy} meters.`);
+
+        resolve({ longitude, latitude, accuracy });
+      };
+
+      const error = err => {
+        reject(err);
+        // console.warn(`ERROR(${err.code}): ${err.message}`);
+      };
+
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    });
+  };
+
+  const flyToCurrentPosition = async () => {
+    try {
+      const coords = await getCurrentPosition();
+
+      console.log("Your current position is:");
+      console.log(`Latitude : ${coords.latitude}`);
+      console.log(`Longitude: ${coords.longitude}`);
+      console.log(`More or less ${coords.accuracy} meters.`);
+
+      longitude = coords.longitude;
+      latitude = coords.latitude;
+    } catch (err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+  };
 </script>
 
 <!-- <svelte:head>
@@ -25,12 +72,12 @@
 
 <div class="wrapper">
   <section class="menu">
-    <!-- <a href="#!" target="_self" on:click={flyToCurrentPosition}>
+    <a href="#!" target="_self" on:click={flyToCurrentPosition}>
       現在位置へ
-    </a> -->
+    </a>
   </section>
 
   <section class="map">
-    <Map />
+    <Map bind:longitude={longitude} bind:latitude={latitude} />
   </section>
 </div>

@@ -1,10 +1,18 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, beforeUpdate } from "svelte";
   import mapboxgl from "mapbox-gl";
 
-  const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
+  export let longitude = 0;
+  export let latitude = 0;
+
+  $: currentPosition = {
+    longitude,
+    latitude
+  };
   let map;
   let container;
+
+  const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
 
   onMount(() => {
     mapboxgl.accessToken =
@@ -13,7 +21,7 @@
     map = new Map({
       container,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [139.7644081, 35.680043],
+      center: [longitude, latitude],
       zoom: 18
     });
 
@@ -37,38 +45,64 @@
     );
 
     map.on("moveend", e => {
-      console.log(map.getCenter());
-      console.log(map.getZoom());
+      const lngLat = map.getCenter();
+      const zoomLevel = map.getZoom();
+
+      currentPosition.longitude = lngLat.lng;
+      currentPosition.latitude = lngLat.lat;
+
+      console.log(currentPosition.longitude, currentPosition.latitude, zoomLevel);
     });
   });
 
-  const flyToCurrentPosition = () => {
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    };
+  beforeUpdate(() => {
+    console.log("beforeUpdate");
 
-    const success = pos => {
-      const { latitude, longitude, accuracy } = pos.coords;
+    if (!map) return;
+    if (
+      longitude === currentPosition.longitude &&
+      latitude === currentPosition.latitude
+    )
+      return;
 
-      console.log("Your current position is:");
-      console.log(`Latitude : ${latitude}`);
-      console.log(`Longitude: ${longitude}`);
-      console.log(`More or less ${accuracy} meters.`);
+    console.log("breforeUpdate:", longitude, latitude);
 
-      map.flyTo({
-        center: [longitude, latitude],
-        zoom: map.getZoom()
-      });
-    };
+    currentPosition.longitude = longitude;
+    currentPosition.latitude = latitude;
 
-    const error = err => {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
-    };
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom: map.getZoom()
+    });
+  });
 
-    navigator.geolocation.getCurrentPosition(success, error, options);
-  };
+  // const flyToCurrentPosition = () => {
+  //   const options = {
+  //     enableHighAccuracy: true,
+  //     timeout: 5000,
+  //     maximumAge: 0
+  //   };
+
+  //   const success = pos => {
+  //     const { latitude, longitude, accuracy } = pos.coords;
+
+  //     console.log("Your current position is:");
+  //     console.log(`Latitude : ${latitude}`);
+  //     console.log(`Longitude: ${longitude}`);
+  //     console.log(`More or less ${accuracy} meters.`);
+
+  //     map.flyTo({
+  //       center: [longitude, latitude],
+  //       zoom: map.getZoom()
+  //     });
+  //   };
+
+  //   const error = err => {
+  //     console.warn(`ERROR(${err.code}): ${err.message}`);
+  //   };
+
+  //   navigator.geolocation.getCurrentPosition(success, error, options);
+  // };
 </script>
 
 <svelte:head>
