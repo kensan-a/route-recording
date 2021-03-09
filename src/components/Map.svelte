@@ -1,14 +1,9 @@
 <script lang="ts">
-  import { onMount, beforeUpdate } from "svelte";
+  import { onMount } from "svelte";
   import mapboxgl from "mapbox-gl";
 
   export let longitude = 0;
   export let latitude = 0;
-
-  const currentPosition = {
-    longitude: 0,
-    latitude: 0
-  };
 
   const lastSpecifiedPosition = {
     longitude: 0,
@@ -28,7 +23,6 @@
     lastSpecifiedPosition.longitude = longitude;
     lastSpecifiedPosition.latitude = latitude;
 
-    // map &&
     map.flyTo({
       center: [longitude, latitude],
       zoom: map.getZoom()
@@ -36,27 +30,6 @@
   }
 
   const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
-
-  // beforeUpdate(() => {
-  //   console.log("beforeUpdate");
-
-  //   if (!map) return;
-  //   if (
-  //     longitude === currentPosition.longitude &&
-  //     latitude === currentPosition.latitude
-  //   )
-  //     return;
-
-  //   console.log("breforeUpdate:", longitude, latitude);
-
-  //   currentPosition.longitude = longitude;
-  //   currentPosition.latitude = latitude;
-
-  //   map.flyTo({
-  //     center: [longitude, latitude],
-  //     zoom: map.getZoom()
-  //   });
-  // });
 
   onMount(() => {
     mapboxgl.accessToken =
@@ -92,42 +65,12 @@
       const lngLat = map.getCenter();
       const zoomLevel = map.getZoom();
 
-      currentPosition.longitude = lngLat.lng;
-      currentPosition.latitude = lngLat.lat;
       longitude = lngLat.lng;
       latitude = lngLat.lat;
 
-      console.log(currentPosition.longitude, currentPosition.latitude, zoomLevel);
+      console.log(longitude, latitude, zoomLevel);
     });
   });
-
-  // const flyToCurrentPosition = () => {
-  //   const options = {
-  //     enableHighAccuracy: true,
-  //     timeout: 5000,
-  //     maximumAge: 0
-  //   };
-
-  //   const success = pos => {
-  //     const { latitude, longitude, accuracy } = pos.coords;
-
-  //     console.log("Your current position is:");
-  //     console.log(`Latitude : ${latitude}`);
-  //     console.log(`Longitude: ${longitude}`);
-  //     console.log(`More or less ${accuracy} meters.`);
-
-  //     map.flyTo({
-  //       center: [longitude, latitude],
-  //       zoom: map.getZoom()
-  //     });
-  //   };
-
-  //   const error = err => {
-  //     console.warn(`ERROR(${err.code}): ${err.message}`);
-  //   };
-
-  //   navigator.geolocation.getCurrentPosition(success, error, options);
-  // };
 </script>
 
 <svelte:head>

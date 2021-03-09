@@ -1,5 +1,4 @@
 <script lang="ts">
-  // import { onMount } from "svelte";
   import Map from "./Map.svelte";
 
   let longitude = 139.7644081;
@@ -15,18 +14,11 @@
 
       const success = pos => {
         const { longitude, latitude, accuracy } = pos.coords;
-
-        // console.log("Your current position is:");
-        // console.log(`Latitude : ${latitude}`);
-        // console.log(`Longitude: ${longitude}`);
-        // console.log(`More or less ${accuracy} meters.`);
-
         resolve({ longitude, latitude, accuracy });
       };
 
       const error = err => {
         reject(err);
-        // console.warn(`ERROR(${err.code}): ${err.message}`);
       };
 
       navigator.geolocation.getCurrentPosition(success, error, options);
