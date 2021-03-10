@@ -1,28 +1,9 @@
 <script lang="ts">
   import Map from "./Map.svelte";
-  import { getCurrentPosition } from "./common/api";
+  import { getCurrentPosition, printPosition } from "./common/api";
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
-
-  const printPosition = pos => {
-    const { coords, timestamp } = pos;
-
-    console.log("Your current position:");
-    console.log(
-      `Longitude: ${coords.longitude} Latitude : ${coords.latitude} Accuracy: ${
-        coords.accuracy
-      } meters.`
-    );
-    console.log(
-      `Altitude: ${coords.altitude} meters. Accuracy: ${
-        coords.altitudeAccuracy
-      } meters.`
-    );
-    console.log(`Heading: ${coords.heading} degrees.`);
-    console.log(`Speed: ${coords.speed} meters/second.`);
-    console.log(`Timestamp: ${timestamp} milliseconds`);
-  };
 
   const flyToCurrentPosition = async () => {
     try {
