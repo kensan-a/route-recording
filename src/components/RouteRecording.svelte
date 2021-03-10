@@ -1,6 +1,11 @@
 <script lang="ts">
   import Map from "./Map.svelte";
-  import { getCurrentPosition, printPosition } from "./common/api";
+  import {
+    getCurrentPosition,
+    startWatchPosition,
+    stopWatchPosition,
+    printPosition
+  } from "./common/api";
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
@@ -14,6 +19,22 @@
       latitude = pos.coords.latitude;
     } catch (err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+  };
+
+  let isWatchPosition = false;
+
+  const watchPositionCallback = pos => {
+    printPosition(pos);
+  };
+
+  const toggleWatchPosition = () => {
+    if (isWatchPosition) {
+      stopWatchPosition();
+      isWatchPosition = false;
+    } else {
+      startWatchPosition(watchPositionCallback);
+      isWatchPosition = true;
     }
   };
 </script>
@@ -31,6 +52,9 @@
 
   .menu {
     flex: 0 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .map {
@@ -40,8 +64,12 @@
 
 <div class="wrapper">
   <section class="menu">
-    <a href="#!" target="_self" on:click={flyToCurrentPosition}>
+    <a href="#!" target="_self" on:click|preventDefault={flyToCurrentPosition}>
       現在位置へ
+    </a>
+
+    <a href="#!" on:click|preventDefault={toggleWatchPosition}>
+      {`位置記録${isWatchPosition? "停止": "開始"}`}
     </a>
   </section>
 

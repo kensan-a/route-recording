@@ -1,1 +1,6 @@
-export { getCurrentPosition, printPosition } from "./geolocation";
+export {
+  getCurrentPosition,
+  startWatchPosition,
+  stopWatchPosition,
+  printPosition
+} from "./geolocation";

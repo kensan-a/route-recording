@@ -23,26 +23,28 @@ const options = {
 
 export const getCurrentPosition = () => {
   return new Promise((resolve, reject) => {
-    const success = (pos) => {
-      console.log(pos.coords);
-      console.log(pos.timestamp);
-      resolve(pos);
-    };
-
-    const error = (err) => {
-      reject(err);
-    };
-
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
   });
 };
 
-export const watchPosition = (callback) => {
+let watchPositionId = null;
+
+export const startWatchPosition = (callback) => {
   const error = (err) => {
     throw err;
   };
 
-  const id = navigator.geolocation.watchPosition(callback, error, options);
+  watchPositionId = navigator.geolocation.watchPosition(
+    callback,
+    error,
+    options
+  );
+};
+
+export const stopWatchPosition = () => {
+  if (typeof watchPositionId === "number") {
+    navigator.geolocation.clearWatch(watchPositionId);
+  }
 };
 
 export const printPosition = (pos) => {
