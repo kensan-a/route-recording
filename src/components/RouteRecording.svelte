@@ -1,41 +1,36 @@
 <script lang="ts">
   import Map from "./Map.svelte";
+  import { getCurrentPosition } from "./common/api";
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
 
-  const getCurrentPosition = () => {
-    return new Promise((resolve, reject) => {
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
+  const printPosition = pos => {
+    const { coords, timestamp } = pos;
 
-      const success = pos => {
-        const { longitude, latitude, accuracy } = pos.coords;
-        resolve({ longitude, latitude, accuracy });
-      };
-
-      const error = err => {
-        reject(err);
-      };
-
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    });
+    console.log("Your current position:");
+    console.log(
+      `Longitude: ${coords.longitude} Latitude : ${coords.latitude} Accuracy: ${
+        coords.accuracy
+      } meters.`
+    );
+    console.log(
+      `Altitude: ${coords.altitude} meters. Accuracy: ${
+        coords.altitudeAccuracy
+      } meters.`
+    );
+    console.log(`Heading: ${coords.heading} degrees.`);
+    console.log(`Speed: ${coords.speed} meters/second.`);
+    console.log(`Timestamp: ${timestamp} milliseconds`);
   };
 
   const flyToCurrentPosition = async () => {
     try {
-      const coords = await getCurrentPosition();
+      const pos = await getCurrentPosition();
+      printPosition(pos);
 
-      console.log("Your current position is:");
-      console.log(`Latitude : ${coords.latitude}`);
-      console.log(`Longitude: ${coords.longitude}`);
-      console.log(`More or less ${coords.accuracy} meters.`);
-
-      longitude = coords.longitude;
-      latitude = coords.latitude;
+      longitude = pos.coords.longitude;
+      latitude = pos.coords.latitude;
     } catch (err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
