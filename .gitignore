@@ -3,6 +3,6 @@
 /src/node_modules/@sapper/
 yarn-error.log
 /__sapper__/
-/.env
-/*.env
-/.codesandbox/
+.env
+*.env
+.codesandbox/
