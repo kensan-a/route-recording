@@ -5,6 +5,9 @@ const path = require('path');
 const config = require('sapper/config/webpack.js');
 const pkg = require('./package.json');
 
+require('dotenv').config();
+const MAPBOXGL_ACCESSTOKEN = process.env.MAPBOXGL_ACCESSTOKEN;
+
 const mode = process.env.NODE_ENV;
 const dev = mode === 'development';
 
@@ -50,7 +53,8 @@ module.exports = {
 			// dev && new webpack.HotModuleReplacementPlugin(),
 			new webpack.DefinePlugin({
 				'process.browser': true,
-				'process.env.NODE_ENV': JSON.stringify(mode)
+				'process.env.NODE_ENV': JSON.stringify(mode),
+				'process.env.MAPBOXGL_ACCESSTOKEN': JSON.stringify(MAPBOXGL_ACCESSTOKEN),
 			}),
 		].filter(Boolean),
 		devtool: dev && 'inline-source-map'

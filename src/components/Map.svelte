@@ -30,8 +30,8 @@
   const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
 
   onMount(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2Vuc2FuLWEiLCJhIjoiY2tseGJzc3k1MDhrajJwbnZhNDVubnpkaiJ9.uZBfIS1iB7V73xxoslqusA";
+    console.log(process.env.MAPBOXGL_ACCESSTOKEN);
+    mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN;
 
     map = new Map({
       container,
