@@ -69,13 +69,15 @@
 
 <div class="wrapper">
   <section class="menu">
-    <a href="#!" target="_self" on:click|preventDefault={flyToCurrentPosition}>
-      現在位置へ
-    </a>
-
     <a href="#!" on:click|preventDefault={toggleWatchPosition}>
       {`位置記録${isWatchPosition? "停止": "開始"}`}
     </a>
+
+    {#if !isWatchPosition}
+      <a href="#!" target="_self" on:click|preventDefault={flyToCurrentPosition}>
+        現在位置へ
+      </a>
+    {/if}
   </section>
 
   <section class="content">

@@ -7,11 +7,9 @@ const options = {
   maximumAge: 0,
 };
 
-export const getCurrentPosition = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
-};
+export const getCurrentPosition = (): Promise<Position> => new Promise((resolve, reject) => {
+  navigator.geolocation.getCurrentPosition(resolve, reject, options);
+});
 
 let watchPositionId = null;
 
@@ -76,7 +74,7 @@ export const printPositionShort = (pos: Position) => {
 };
 
 
-export const toStringPositionShort = (pos) => {
+export const toStringPositionShort = (pos: Position) => {
   const { coords, timestamp } = pos;
   const {
     longitude,
