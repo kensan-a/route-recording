@@ -4,7 +4,8 @@
     getCurrentPosition,
     startWatchPosition,
     stopWatchPosition,
-    printPosition
+    printPosition,
+    printPositionShort
   } from "./common/api";
 
   let longitude = 139.7644081;
@@ -25,7 +26,7 @@
   let isWatchPosition = false;
 
   const watchPositionCallback = pos => {
-    printPosition(pos);
+    printPositionShort(pos);
   };
 
   const toggleWatchPosition = () => {

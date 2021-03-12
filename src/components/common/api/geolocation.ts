@@ -47,17 +47,44 @@ export const stopWatchPosition = () => {
   }
 };
 
-export const printPosition = (pos) => {
+export const printPosition = (pos: Position) => {
   const { coords, timestamp } = pos;
+  const {
+    longitude,
+    latitude,
+    accuracy,
+    altitude,
+    altitudeAccuracy,
+    heading,
+    speed
+  } = coords;
+  const timestampText = dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss");
 
-  console.log("Your current position:");
+  console.log(`Timestamp: ${timestampText}`);
   console.log(
-    `Longitude: ${coords.longitude} Latitude : ${coords.latitude} Accuracy: ${coords.accuracy} meters.`
+    `Longitude: ${longitude} Latitude : ${latitude} Accuracy: ${accuracy} meters.`
   );
-  console.log(
-    `Altitude: ${coords.altitude} meters. Accuracy: ${coords.altitudeAccuracy} meters.`
-  );
-  console.log(`Heading: ${coords.heading} degrees.`);
-  console.log(`Speed: ${coords.speed} meters/second.`);
-  console.log(`Timestamp: ${dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss")}`);
+
+  if (altitude)
+    console.log(
+      `Altitude: ${altitude} meters. Accuracy: ${altitudeAccuracy} meters.`
+    );
+  if (heading) console.log(`Heading: ${heading} degrees.`);
+  if (speed) console.log(`Speed: ${speed} meters/second.`);
+};
+
+export const printPositionShort = (pos: Position) => {
+  const { coords, timestamp } = pos;
+  const {
+    longitude,
+    latitude,
+    accuracy,
+    altitude,
+    altitudeAccuracy,
+    heading,
+    speed
+  } = coords;
+  const timestampText = dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss");
+
+  console.log(`${timestampText}:[${longitude}, ${latitude}](+-${accuracy}m)`);
 };

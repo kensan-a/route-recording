@@ -2,5 +2,6 @@ export {
   getCurrentPosition,
   startWatchPosition,
   stopWatchPosition,
-  printPosition
+  printPosition,
+  printPositionShort
 } from "./geolocation";
