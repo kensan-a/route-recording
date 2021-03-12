@@ -35,7 +35,8 @@
 
     map = new Map({
       container,
-      style: "mapbox://styles/mapbox/streets-v11",
+      // style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
       center: [longitude, latitude],
       zoom: 18
     });
