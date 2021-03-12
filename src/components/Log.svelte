@@ -3,8 +3,22 @@
   export let positions;
 </script>
 
-{#each positions as position}
-  <div>
-    <span>{toStringPositionShort(position)}</span>
-  </div>
-{/each}
+<style>
+  .log {
+    height: 100%;
+    overflow: auto;
+  }
+</style>
+
+
+<div class="log">
+  <!-- {#each new Array(30) as _}
+    <div>ダミー</div>
+  {/each} -->
+
+  {#each positions as position}
+    <div>
+      <span>{toStringPositionShort(position)}</span>
+    </div>
+  {/each}
+</div>
