@@ -1,12 +1,17 @@
 <script lang="ts">
+  import Log from "./Log.svelte";
   import Map from "./Map.svelte";
+
   import {
     getCurrentPosition,
     startWatchPosition,
     stopWatchPosition,
     printPosition,
     printPositionShort
-  } from "./common/api";
+  } from "./common/api/geolocation";
+
+  let isWatchPosition = false;
+  let positions = [];
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
@@ -23,10 +28,9 @@
     }
   };
 
-  let isWatchPosition = false;
-
-  const watchPositionCallback = pos => {
-    printPositionShort(pos);
+  const watchPositionCallback = newPosition => {
+    printPositionShort(newPosition);
+    positions = [...positions, newPosition];
   };
 
   const toggleWatchPosition = () => {
@@ -58,7 +62,7 @@
     gap: 1rem;
   }
 
-  .map {
+  .content {
     flex: 1 1 auto;
   }
 </style>
@@ -74,7 +78,11 @@
     </a>
   </section>
 
-  <section class="map">
-    <Map bind:longitude={longitude} bind:latitude={latitude} />
+  <section class="content">
+    {#if isWatchPosition}
+      <Log {positions} />
+    {:else}
+      <Map bind:longitude={longitude} bind:latitude={latitude} />
+    {/if}
   </section>
 </div>

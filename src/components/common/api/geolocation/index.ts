@@ -3,5 +3,6 @@ export {
   startWatchPosition,
   stopWatchPosition,
   printPosition,
-  printPositionShort
+  printPositionShort,
+  toStringPositionShort,
 } from "./geolocation";

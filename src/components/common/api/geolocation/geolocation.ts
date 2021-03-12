@@ -1,24 +1,10 @@
 import dayjs from "dayjs";
-
-export interface Coordinates {
-  longitude: number;
-  latitude: number;
-  accuracy: number;
-  altitude: number;
-  altitudeAccuracy: number;
-  heading: number;
-  speed: number;
-}
-
-export interface Position {
-  coords: Coordinates;
-  timestamp: number;
-}
+import { Position, WatchPositionCallback, WatchPositionErrorCallback } from "./types";
 
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
-  maximumAge: 0
+  maximumAge: 0,
 };
 
 export const getCurrentPosition = () => {
@@ -29,8 +15,8 @@ export const getCurrentPosition = () => {
 
 let watchPositionId = null;
 
-export const startWatchPosition = (callback) => {
-  const error = (err) => {
+export const startWatchPosition = (callback: WatchPositionCallback) => {
+  const error: WatchPositionErrorCallback = (err) => {
     throw err;
   };
 
@@ -87,4 +73,21 @@ export const printPositionShort = (pos: Position) => {
   const timestampText = dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss");
 
   console.log(`${timestampText}:[${longitude}, ${latitude}](+-${accuracy}m)`);
+};
+
+
+export const toStringPositionShort = (pos) => {
+  const { coords, timestamp } = pos;
+  const {
+    longitude,
+    latitude,
+    accuracy,
+    altitude,
+    altitudeAccuracy,
+    heading,
+    speed
+  } = coords;
+  const timestampText = dayjs(timestamp).format("YYYY/MM/DD HH:mm:ss");
+
+  return `${timestampText}:[${longitude}, ${latitude}](+-${accuracy}m)`;
 };
