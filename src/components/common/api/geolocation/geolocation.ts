@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Position, WatchPositionCallback, WatchPositionErrorCallback } from "./types";
+import type { Position, WatchPositionCallback, WatchPositionErrorCallback } from "./types";
 
 const options = {
   enableHighAccuracy: true,
