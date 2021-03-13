@@ -70,6 +70,43 @@
       console.log("Map is moved:");
       console.log(longitude, latitude, zoom);
     });
+
+    map.on("click", e => {
+      console.log(e.lngLat);
+    });
+
+    map.on('load', function() {
+      map.addLayer({
+        'id': 'route',
+        'type': 'line',
+        'source': {
+          'type': 'geojson',
+          'data': {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [
+                [139.53363275125986, 35.41085613181484],
+                [139.5336149218278, 35.41101306978793],
+                [139.53356737669725, 35.411139976255285],
+                [139.53337125295047, 35.41110510123171],
+                [139.53324525829214, 35.411073132446674],
+                [139.5331335271798, 35.41116128874815]
+              ]
+            }
+          }
+        },
+        'layout': {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        'paint': {
+        'line-color': '#888',
+        'line-width': 8
+        }
+      });
+    });
   });
 </script>
 
