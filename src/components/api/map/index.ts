@@ -38,6 +38,14 @@ export default class Map {
     this.map.on(type, listener);
   }
 
+  getCenter() {
+    return this.map.getCenter();
+  }
+
+  getZoom() {
+    return this.map.getZoom();
+  }
+
   flyTo(options: any) {
     this.map.flyTo(options);
   }

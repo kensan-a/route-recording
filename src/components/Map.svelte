@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import mapboxgl from "mapbox-gl";
+  import Map from "./api/map";
 
   export let longitude = 0;
   export let latitude = 0;
@@ -27,38 +27,15 @@
     }
   }
 
-  const { Map, NavigationControl, ScaleControl, GeolocateControl } = mapboxgl;
-
   onMount(() => {
     console.log(process.env.MAPBOXGL_ACCESSTOKEN);
-    mapboxgl.accessToken = process.env.MAPBOXGL_ACCESSTOKEN;
-
-    map = new Map({
+    map = new Map(process.env.MAPBOXGL_ACCESSTOKEN, {
       container,
       // style: "mapbox://styles/mapbox/streets-v11",
       style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
       center: [longitude, latitude],
       zoom: 18
     });
-
-    map.addControl(new NavigationControl());
-
-    map.addControl(
-      new ScaleControl({
-        maxWidth: 200,
-        unit: "metric"
-      }),
-      "bottom-right"
-    );
-
-    map.addControl(
-      new GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true
-        },
-        trackUserLocation: false
-      })
-    );
 
     map.on("moveend", e => {
       const center = map.getCenter();
@@ -127,16 +104,7 @@
 
 <div class="map" bind:this={container}></div>
 
-  <!-- <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRo134Nk1ubkPS5gm6mdyQ64gCVUhSIuc&libraries=places"
-  ></script> -->
-
-  <!-- const startMap = () => {
-    cmanPosWatch(window.google.maps);
-  }; -->
-
-  <!-- // import { cmanPosWatch } from "./common/getLocation";
-
+<!-- 
     // const map = new Map({
     //   container: "watMap",
     //   style: {
@@ -162,4 +130,5 @@
     //     center: [139.7644081, 35.680043],
     //     zoom: 10
     //   }
-    // }); -->
+    // });
+     -->
