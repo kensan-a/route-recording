@@ -32,10 +32,10 @@
     map = new Map(process.env.MAPBOXGL_ACCESSTOKEN, {
       container,
       // style: "mapbox://styles/mapbox/streets-v11",
-      style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
+      // style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
+      style: "mapbox://styles/kensan-a/ckm8pt3kr3os317rvf6e3voor",
       center: [longitude, latitude],
-      // zoom: 18
-      zoom: 12
+      zoom: 15
     });
 
     map.on("moveend", e => {
