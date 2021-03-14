@@ -4,7 +4,7 @@ import type { Position, WatchPositionCallback, WatchPositionErrorCallback } from
 const options = {
   enableHighAccuracy: true,
   timeout: 5000,
-  maximumAge: 0,
+  maximumAge: 10000,
 };
 
 export const getCurrentPosition = (): Promise<Position> => new Promise((resolve, reject) => {
