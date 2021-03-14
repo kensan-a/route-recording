@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Map from "./api/map";
+  import { lineString, length } from "@turf/turf";
 
   export let longitude = 0;
   export let latitude = 0;
@@ -29,6 +30,7 @@
 
   onMount(() => {
     console.log(process.env.MAPBOXGL_ACCESSTOKEN);
+
     map = new Map(process.env.MAPBOXGL_ACCESSTOKEN, {
       container,
       // style: "mapbox://styles/mapbox/streets-v11",
@@ -53,27 +55,27 @@
       console.log(e.lngLat);
     });
 
+    const testCoordinates = [
+      [139.53363275125986, 35.41085613181484],
+      [139.5336149218278, 35.41101306978793],
+      [139.53356737669725, 35.411139976255285],
+      [139.53337125295047, 35.41110510123171],
+      [139.53324525829214, 35.411073132446674],
+      [139.5331335271798, 35.41116128874815],
+      [139.53287126011406, 35.41135358044839],
+    ];
+
+    const testRoute = lineString(testCoordinates);
+    const testRouteLength = length(testRoute, {units: "kilometers"});
+    console.log(`Length of test route = ${testRouteLength} kilometers.`);
+
     map.on('load', e => {
       map.addLayer({
         'id': 'route',
         'type': 'line',
         'source': {
           'type': 'geojson',
-          'data': {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-              'type': 'LineString',
-              'coordinates': [
-                [139.53363275125986, 35.41085613181484],
-                [139.5336149218278, 35.41101306978793],
-                [139.53356737669725, 35.411139976255285],
-                [139.53337125295047, 35.41110510123171],
-                [139.53324525829214, 35.411073132446674],
-                [139.5331335271798, 35.41116128874815]
-              ]
-            }
-          }
+          'data': testRoute,
         },
         'layout': {
           'line-join': 'round',

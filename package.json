@@ -10,6 +10,7 @@
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
+    "@turf/turf": "^6.3.0",
     "@types/mapbox-gl": "2.1.0",
     "compression": "^1.7.1",
     "dayjs": "1.10.4",
