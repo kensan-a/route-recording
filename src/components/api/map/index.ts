@@ -34,7 +34,7 @@ export default class Map {
     this.map.addLayer(layer);
   }
 
-  on(type: string, listener: any) {
+  on(type: string, listener: (e: any) => void) {
     this.map.on(type, listener);
   }
 

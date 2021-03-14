@@ -34,7 +34,8 @@
       // style: "mapbox://styles/mapbox/streets-v11",
       style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
       center: [longitude, latitude],
-      zoom: 18
+      // zoom: 18
+      zoom: 12
     });
 
     map.on("moveend", e => {
@@ -52,7 +53,7 @@
       console.log(e.lngLat);
     });
 
-    map.on('load', function() {
+    map.on('load', e => {
       map.addLayer({
         'id': 'route',
         'type': 'line',
@@ -97,12 +98,10 @@
   }
 </style>
 
-<div>
+<div class="map" bind:this={container}>
   <span>{longitude}</span>
   <apsn>{latitude}</apsn>
 </div>
-
-<div class="map" bind:this={container}></div>
 
 <!-- 
     // const map = new Map({

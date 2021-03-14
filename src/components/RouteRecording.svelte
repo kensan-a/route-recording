@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Log from "./Log.svelte";
   import Map from "./Map.svelte";
 
@@ -42,6 +43,8 @@
       isWatchPosition = true;
     }
   };
+
+  onMount(flyToCurrentPosition);
 </script>
 
 <!-- <svelte:head>
