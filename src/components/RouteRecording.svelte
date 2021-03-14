@@ -8,7 +8,7 @@
     stopWatchPosition,
     printPosition,
     printPositionShort
-  } from "./common/api/geolocation";
+  } from "./api/geolocation";
 
   let isWatchPosition = false;
   let positions = [];

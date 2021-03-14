@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toStringPositionShort } from "./common/api/geolocation";
+  import { toStringPositionShort } from "./api/geolocation";
   export let positions;
 </script>
 
