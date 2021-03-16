@@ -14,13 +14,8 @@
 
   let isWatchPosition = false;
   let positions = [];
-  let positionsJson = "";
 
-  $: {
-    console.log(positions);
-    positionsJson = JSON.stringify(positions);
-    console.log(positionsJson);
-  }
+  $: route = positions.map(position => [position.coords.longitude, position.coords.latitude]);
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
@@ -91,7 +86,7 @@
       </a>
 
       <Download 
-        content={positionsJson}
+        content={JSON.stringify(positions)}
         type="text/json"
         fileName="route.csv"
       >

@@ -9,7 +9,10 @@ const options = {
 
 //
 // Geolocationオブジェクトをオブジェクトに変換する。
-//  ※これをしないと、後の処理でJSON.stringfyできないため。
+//  ※Geolocationオブジェクトの各プロパティを単に別のオブジェクトにコピーしているだけだが、
+//    これをしておかないと、なぜか後の処理でJSON.stringfyできないため。
+//    参考：
+//      https://stackoverflow.com/questions/11042212/ff-13-ie-9-json-stringify-geolocation-object
 // 
 const geolocationObjectToObject = (position: Position) => ({
   coords: {
@@ -25,7 +28,11 @@ const geolocationObjectToObject = (position: Position) => ({
 });
 
 export const getCurrentPosition = (): Promise<Position> => new Promise((resolve, reject) => {
-  navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  const success: WatchPositionCallback = (position) => {
+    resolve(geolocationObjectToObject(position));
+  };
+
+  navigator.geolocation.getCurrentPosition(success, reject, options);
 });
 
 let watchPositionId = null;
@@ -93,7 +100,6 @@ export const printPositionShort = (pos: Position) => {
 
   console.log(`${timestampText}:[${longitude}, ${latitude}](+-${accuracy}m)`);
 };
-
 
 export const toStringPositionShort = (pos: Position) => {
   const { coords, timestamp } = pos;
