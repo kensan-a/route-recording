@@ -1,6 +1,8 @@
 <script lang="ts">
   import { toStringPositionShort } from "./api/geolocation";
   export let positions;
+
+  $: recentPositions = positions.slice(-10).reverse();
 </script>
 
 <style>
@@ -16,7 +18,7 @@
     <div>ダミー</div>
   {/each} -->
 
-  {#each positions as position}
+  {#each recentPositions as position}
     <div>
       <span>{toStringPositionShort(position)}</span>
     </div>
