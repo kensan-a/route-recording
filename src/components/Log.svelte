@@ -2,7 +2,8 @@
   import { toStringPositionShort } from "./api/geolocation";
   export let positions;
 
-  $: recentPositions = positions.slice(-10).reverse();
+  const LOG_NUM = 10;
+  $: recentPositions = positions.slice(-LOG_NUM).reverse();
 </script>
 
 <style>

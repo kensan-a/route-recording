@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Log from "./Log.svelte";
   import Map from "./Map.svelte";
+  import Download from "./common/Download";
 
   import {
     getCurrentPosition,
@@ -13,6 +14,13 @@
 
   let isWatchPosition = false;
   let positions = [];
+  let positionsJson = "";
+
+  $: {
+    console.log(positions);
+    positionsJson = JSON.stringify(positions);
+    console.log(positionsJson);
+  }
 
   let longitude = 139.7644081;
   let latitude = 35.680043;
@@ -81,6 +89,14 @@
       <a href="#!" target="_self" on:click|preventDefault={flyToCurrentPosition}>
         現在位置へ
       </a>
+
+      <Download 
+        content={positionsJson}
+        type="text/json"
+        fileName="route.csv"
+      >
+        <span class="material-icons">cloud_download</span>
+      </Download>
     {/if}
   </section>
 

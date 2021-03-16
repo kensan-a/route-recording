@@ -7,6 +7,23 @@ const options = {
   maximumAge: 10000,
 };
 
+//
+// Geolocationオブジェクトをオブジェクトに変換する。
+//  ※これをしないと、後の処理でJSON.stringfyできないため。
+// 
+const geolocationObjectToObject = (position: Position) => ({
+  coords: {
+    accuracy: position.coords.accuracy,
+    altitude: position.coords.altitude,
+    altitudeAccuracy: position.coords.altitudeAccuracy,
+    heading: position.coords.heading,
+    latitude: position.coords.latitude,
+    longitude: position.coords.longitude,
+    speed: position.coords.speed,
+  },
+  timestamp: position.timestamp,
+});
+
 export const getCurrentPosition = (): Promise<Position> => new Promise((resolve, reject) => {
   navigator.geolocation.getCurrentPosition(resolve, reject, options);
 });
@@ -14,12 +31,16 @@ export const getCurrentPosition = (): Promise<Position> => new Promise((resolve,
 let watchPositionId = null;
 
 export const startWatchPosition = (callback: WatchPositionCallback) => {
+  const success: WatchPositionCallback = (position) => {
+    callback(geolocationObjectToObject(position));
+  };
+
   const error: WatchPositionErrorCallback = (err) => {
     throw err;
   };
 
   watchPositionId = navigator.geolocation.watchPosition(
-    callback,
+    success,
     error,
     options
   );
