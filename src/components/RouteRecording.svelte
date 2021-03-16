@@ -12,21 +12,30 @@
     printPositionShort
   } from "./api/geolocation";
 
+  let map = null;
+
   let isWatchPosition = false;
   let positions = [];
 
   $: route = positions.map(position => [position.coords.longitude, position.coords.latitude]);
 
-  let longitude = 139.7644081;
-  let latitude = 35.680043;
+  const addRoute = () => {
+    map.addRoute([
+      [139.53363275125986, 35.41085613181484],
+      [139.5336149218278, 35.41101306978793],
+      [139.53356737669725, 35.411139976255285],
+      [139.53337125295047, 35.41110510123171],
+      [139.53324525829214, 35.411073132446674],
+      [139.5331335271798, 35.41116128874815],
+      [139.53287126011406, 35.41135358044839],
+    ]);
+  };
 
-  const flyToCurrentPosition = async () => {
+  const flyToCurrentPosition = async (zoom = null) => {
     try {
       const pos = await getCurrentPosition();
       printPosition(pos);
-
-      longitude = pos.coords.longitude;
-      latitude = pos.coords.latitude;
+      map.flyTo(pos.coords.longitude, pos.coords.latitude, zoom);
     } catch (err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
@@ -47,12 +56,10 @@
     }
   };
 
-  onMount(flyToCurrentPosition);
+  onMount(() => {
+    flyToCurrentPosition(15);
+  });
 </script>
-
-<!-- <svelte:head>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
-</svelte:head> -->
 
 <style>
   .wrapper {
@@ -81,8 +88,12 @@
     </a>
 
     {#if !isWatchPosition}
-      <a href="#!" target="_self" on:click|preventDefault={flyToCurrentPosition}>
+      <a href="#!" target="_self" on:click|preventDefault={() => flyToCurrentPosition()}>
         現在位置へ
+      </a>
+
+      <a href="#!" target="_self" on:click|preventDefault={addRoute}>
+        ルート表示
       </a>
 
       <Download 
@@ -99,7 +110,7 @@
     {#if isWatchPosition}
       <Log {positions} />
     {:else}
-      <Map bind:longitude={longitude} bind:latitude={latitude} />
+      <Map bind:this={map} />
     {/if}
   </section>
 </div>

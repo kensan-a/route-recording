@@ -3,30 +3,40 @@
   import Map from "./api/map";
   import { lineString, length } from "@turf/turf";
 
-  export let longitude = 0;
-  export let latitude = 0;
-
   let map;
   let container;
 
-  $: {
-    if (map) {
-      console.log("Map component updated:");
+  export const flyTo = (longitude, latitude, zoom = null) => {
+    if (!zoom) zoom = map.getZoom();
 
-      const center = map.getCenter();
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom,
+    });
+  };
 
-      if (longitude !== center.lng || latitude !== center.lat) {
-        console.log("Specified position changed:");
-        console.log(center.lng, "-> ", longitude);
-        console.log(center.lat, "->", latitude);
+  export const addRoute = (route) => {
+    const routeLineString = lineString(route);
+    const routeLength = length(routeLineString, {units: "kilometers"});
+    console.log(`Length of route = ${routeLength} kilometers.`);
 
-        map.flyTo({
-          center: [longitude, latitude],
-          zoom: map.getZoom()
-        });
+    map.addLayer({
+      'id': 'route',
+      'type': 'line',
+      'source': {
+        'type': 'geojson',
+        'data': routeLineString,
+      },
+      'layout': {
+        'line-join': 'round',
+        'line-cap': 'round'
+      },
+      'paint': {
+      'line-color': '#3cb371',
+      'line-width': 4
       }
-    }
-  }
+    });
+  };
 
   onMount(() => {
     console.log(process.env.MAPBOXGL_ACCESSTOKEN);
@@ -36,56 +46,23 @@
       // style: "mapbox://styles/mapbox/streets-v11",
       // style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
       style: "mapbox://styles/kensan-a/ckm8pt3kr3os317rvf6e3voor",
-      center: [longitude, latitude],
+      // center: [longitude, latitude],
       zoom: 15
     });
 
     map.on("moveend", e => {
       const center = map.getCenter();
       const zoom = map.getZoom();
-
-      longitude = center.lng;
-      latitude = center.lat;
-
-      console.log("Map is moved:");
-      console.log(longitude, latitude, zoom);
+      console.log(`Map moved: [${center.lng}, ${center.lat}] zoom=${zoom}`);
     });
 
     map.on("click", e => {
-      console.log(e.lngLat);
+      const { lng, lat } = e.lngLat;
+      console.log(`Map pointed: [${lng}, ${lat}]`)
     });
 
-    const testCoordinates = [
-      [139.53363275125986, 35.41085613181484],
-      [139.5336149218278, 35.41101306978793],
-      [139.53356737669725, 35.411139976255285],
-      [139.53337125295047, 35.41110510123171],
-      [139.53324525829214, 35.411073132446674],
-      [139.5331335271798, 35.41116128874815],
-      [139.53287126011406, 35.41135358044839],
-    ];
-
-    const testRoute = lineString(testCoordinates);
-    const testRouteLength = length(testRoute, {units: "kilometers"});
-    console.log(`Length of test route = ${testRouteLength} kilometers.`);
-
-    map.on('load', e => {
-      map.addLayer({
-        'id': 'route',
-        'type': 'line',
-        'source': {
-          'type': 'geojson',
-          'data': testRoute,
-        },
-        'layout': {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        'paint': {
-        'line-color': '#3cb371',
-        'line-width': 4
-        }
-      });
+    map.on("load", e => {
+      console.log("Map loaded.");
     });
   });
 </script>
@@ -100,10 +77,7 @@
   }
 </style>
 
-<div class="map" bind:this={container}>
-  <span>{longitude}</span>
-  <apsn>{latitude}</apsn>
-</div>
+<div class="map" bind:this={container}></div>
 
 <!-- 
     // const map = new Map({
