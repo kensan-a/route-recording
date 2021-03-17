@@ -2,7 +2,9 @@
   import { onMount } from "svelte";
   import Log from "./Log.svelte";
   import Map from "./Map.svelte";
-  import Download from "./common/Download";
+  import Download from "./common/file/Download";
+  import FileSelect from "./common/file/FileSelect";
+  import { readTextFile } from "./common/file/readTextFile";
 
   import {
     getCurrentPosition,
@@ -56,6 +58,13 @@
     }
   };
 
+  const onSelectUploadFile = async e => {
+    const uploadedPositionsJson = await readTextFile(e.detail.files[0]);
+    const uploadedPositions = JSON.parse(uploadedPositionsJson);
+    const uploadedRoute = uploadedPositions.map(position => [position.coords.longitude, position.coords.latitude]);
+    map.addRoute(uploadedRoute);    
+  }
+
   onMount(() => {
     flyToCurrentPosition(15);
   });
@@ -103,6 +112,10 @@
       >
         <span class="material-icons">cloud_download</span>
       </Download>
+
+      <FileSelect on:select={onSelectUploadFile}>
+        <span class="material-icons">cloud_upload</span>
+      </FileSelect>
     {/if}
   </section>
 
