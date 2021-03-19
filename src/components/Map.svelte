@@ -27,34 +27,28 @@
 
     console.log(`Length of route = ${routeLength} kilometers.`);
 
-    const routeSourceId = "route-source"
     const routeLayerId = "route-layer";
+    const routeSourceId = "route-source"
 
-    if (map.getLayer(routeLayerId)) {
-      console.log(`Layer ${routeLayerId} exsist.`);
-      map.removeLayer(routeLayerId);
-    } else {
-      console.log(`Layer ${routeLayerId} not exsist.`);
-    }
-
+    if (map.getLayer(routeLayerId)) map.removeLayer(routeLayerId);
     if (map.getSource(routeSourceId)) map.removeSource(routeSourceId);
 
     map.addSource(routeSourceId, {
-      'type': 'geojson',
-      'data': routeLineString,
+      type: "geojson",
+      data: routeLineString,
     });
 
     map.addLayer({
-      'id': routeLayerId,
-      'type': 'line',
-      'source': routeSourceId,
-      'layout': {
-        'line-join': 'round',
-        'line-cap': 'round'
+      id: routeLayerId,
+      type: "line",
+      source: routeSourceId,
+      layout: {
+        "line-join": "round",
+        "line-cap": "round"
       },
-      'paint': {
-        'line-color': '#3cb371',
-        'line-width': 4
+      paint: {
+        "line-color": "#3cb371",
+        "line-width": 3
       }
     });
   };
