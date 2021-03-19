@@ -30,8 +30,28 @@ export default class Map {
     );
   }
 
+  addSource(id, source: any) {
+    this.map.addSource(id, source);
+  }
+
+  getSource(id: string) {
+    return this.map.getSource(id);
+  }
+
+  removeSource(id: string) {
+    this.map.removeSource(id);
+  }
+
   addLayer(layer: any) {
     this.map.addLayer(layer);
+  }
+
+  getLayer(id: string) {
+    return this.map.getLayer(id);
+  }
+
+  removeLayer(id: string) {
+    this.map.removeLayer(id);
   }
 
   on(type: string, listener: (e: any) => void) {

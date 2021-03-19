@@ -24,19 +24,30 @@
   export const addRoute = (route) => {
     const routeLineString = lineString(route);
     const routeLength = length(routeLineString, {units: "kilometers"});
-    
+
     console.log(`Length of route = ${routeLength} kilometers.`);
 
-    const routeLayerId = "route";
-    // if (map.getLayer(routeLayerId)) map.removeLayer(routeLayerId);
+    const routeSourceId = "route-source"
+    const routeLayerId = "route-layer";
+
+    if (map.getLayer(routeLayerId)) {
+      console.log(`Layer ${routeLayerId} exsist.`);
+      map.removeLayer(routeLayerId);
+    } else {
+      console.log(`Layer ${routeLayerId} not exsist.`);
+    }
+
+    if (map.getSource(routeSourceId)) map.removeSource(routeSourceId);
+
+    map.addSource(routeSourceId, {
+      'type': 'geojson',
+      'data': routeLineString,
+    });
 
     map.addLayer({
       'id': routeLayerId,
       'type': 'line',
-      'source': {
-        'type': 'geojson',
-        'data': routeLineString,
-      },
+      'source': routeSourceId,
       'layout': {
         'line-join': 'round',
         'line-cap': 'round'
