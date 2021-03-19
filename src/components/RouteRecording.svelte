@@ -15,6 +15,9 @@
   } from "./api/geolocation";
 
   let map = null;
+  let longitude = 139.76719858406562;
+  let latitude = 35.68089343932499;
+  let zoom = 15;
 
   let isWatchPosition = false;
   let positions = [];
@@ -123,7 +126,7 @@
     {#if isWatchPosition}
       <Log {positions} />
     {:else}
-      <Map bind:this={map} />
+      <Map bind:this={map} bind:longitude={longitude} bind:latitude={latitude} bind:zoom={zoom} />
     {/if}
   </section>
 </div>

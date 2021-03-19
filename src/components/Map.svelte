@@ -3,11 +3,17 @@
   import Map from "./api/map";
   import { lineString, length } from "@turf/turf";
 
+  export let longitude;
+  export let latitude;
+  export let zoom;
+
   let map;
   let container;
 
-  export const flyTo = (longitude, latitude, zoom = null) => {
-    if (!zoom) zoom = map.getZoom();
+  export const flyTo = (newLongitude, newLatitude, newZoom = undefined) => {
+    longitude = newLongitude;
+    latitude = newLatitude;
+    zoom = (newZoom)? newZoom: map.getZoom();
 
     map.flyTo({
       center: [longitude, latitude],
@@ -18,10 +24,14 @@
   export const addRoute = (route) => {
     const routeLineString = lineString(route);
     const routeLength = length(routeLineString, {units: "kilometers"});
+    
     console.log(`Length of route = ${routeLength} kilometers.`);
 
+    const routeLayerId = "route";
+    // if (map.getLayer(routeLayerId)) map.removeLayer(routeLayerId);
+
     map.addLayer({
-      'id': 'route',
+      'id': routeLayerId,
       'type': 'line',
       'source': {
         'type': 'geojson',
@@ -32,8 +42,8 @@
         'line-cap': 'round'
       },
       'paint': {
-      'line-color': '#3cb371',
-      'line-width': 4
+        'line-color': '#3cb371',
+        'line-width': 4
       }
     });
   };
@@ -46,14 +56,16 @@
       // style: "mapbox://styles/mapbox/streets-v11",
       // style: "mapbox://styles/kensan-a/cklxcdkcf2x2t17pocqa2v8mk",
       style: "mapbox://styles/kensan-a/ckm8pt3kr3os317rvf6e3voor",
-      // center: [longitude, latitude],
-      zoom: 15
+      center: [longitude, latitude],
+      zoom,
     });
 
     map.on("moveend", e => {
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      console.log(`Map moved: [${center.lng}, ${center.lat}] zoom=${zoom}`);
+      const { lng, lat } = map.getCenter();
+      longitude = lng;
+      latitude = lat;
+      zoom = map.getZoom();
+      console.log(`Map moved: [${longitude}, ${latitude}] zoom=${zoom}`);
     });
 
     map.on("click", e => {
