@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { startWakeLock, stopWakeLock } from "./api/wakeLock";
   import Log from "./Log.svelte";
   import Map from "./Map.svelte";
   import Download from "./common/file/Download";
@@ -54,9 +55,11 @@
   const toggleWatchPosition = () => {
     if (isWatchPosition) {
       stopWatchPosition();
+      stopWakeLock();
       isWatchPosition = false;
     } else {
       startWatchPosition(watchPositionCallback);
+      startWakeLock();
       isWatchPosition = true;
     }
   };

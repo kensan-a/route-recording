@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Map from "./api/map";
   import { lineString, length } from "@turf/turf";
+  import Map from "./api/map";
 
   export let longitude;
   export let latitude;
