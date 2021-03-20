@@ -1,11 +1,12 @@
 let wakeLock = null;
 
 export const requestWakeLock = async (releaseCallback: () => void) => {
-  // if (!("wakeLock" in navigator)) {
-  //   throw new Error("Wake lock API is not supported.");
-  // }
+  if (!("wakeLock" in navigator)) {
+    throw new Error("Wake lock API is not supported.");
+  }
 
   try {
+    // @ts-ignore
     wakeLock = await navigator.wakeLock.request('screen');
     console.log('Screen Wake Lock is active');
 
@@ -19,7 +20,7 @@ const releaseCallback = () => {
   console.log('Screen Wake Lock released:', wakeLock.released);
 };
 
-export const starttWakeLock = async () => {
+export const startWakeLock = async () => {
   await requestWakeLock(releaseCallback);
 
   const handleVisibilityChange = async () => {
