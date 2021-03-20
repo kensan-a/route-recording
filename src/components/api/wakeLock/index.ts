@@ -7,8 +7,8 @@ export const requestWakeLock = async (releaseCallback: () => void) => {
 
   try {
     // @ts-ignore
-    wakeLock = await navigator.wakeLock.request('screen');
-    console.log('Screen Wake Lock is active');
+    wakeLock = await navigator.wakeLock.request("screen");
+    console.log("Screen Wake Lock activated");
 
     wakeLock.addEventListener("release", releaseCallback);
   } catch (err) {
@@ -17,7 +17,7 @@ export const requestWakeLock = async (releaseCallback: () => void) => {
 };
 
 const releaseCallback = () => {
-  console.log('Screen Wake Lock released:', wakeLock.released);
+  console.log("Screen Wake Lock released.");
 };
 
 export const startWakeLock = async () => {
